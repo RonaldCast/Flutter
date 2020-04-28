@@ -16,6 +16,7 @@ class Quiz extends StatelessWidget {
       Container(
         child: Column(
           children: <Widget>[
+            TextField( decoration: InputDecoration(labelText: "sjjj"),),
             ...(questions[questionIndex]['answer'] as List<Map<String, Object>>)
                 .map((answer) {
               return Answer(() => answaerQuestion( answer['score']), text: answer['text']);
