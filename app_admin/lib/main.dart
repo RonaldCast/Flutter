@@ -10,6 +10,23 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+          textTheme: ThemeData.light().textTheme.copyWith(
+            title: TextStyle(fontFamily: "OpenSans",
+               fontSize: 18,
+               fontWeight: FontWeight.bold
+            )
+          ) ,
+          primarySwatch:
+              Colors.red, //para darle a futuro diferentes tonalidades
+          accentColor: Colors
+              .green, //para realizar tonalidades y convinaciones este color se le aplica a los elementos segundario ofrecido por material
+          fontFamily: 'Quicksand',
+           // para establecer la funte del tema
+          appBarTheme: AppBarTheme(
+              textTheme: ThemeData.light().textTheme.copyWith(
+                  title: TextStyle(fontFamily: 'OpenSans', fontSize: 20))) // sobre eescribe el tema por defecto
+                  ),
       home: MyHomePage(),
     );
   }
@@ -48,18 +65,18 @@ class _MyHomePageState extends State<MyHomePage> {
         context: ctx,
         builder: (_) {
           return GestureDetector(
-              child: NewTransaction(_addNewTransaction),
-              onTap: () {},
-              behavior: HitTestBehavior.opaque,);}
-
-    );
+            child: NewTransaction(_addNewTransaction),
+            onTap: () {},
+            behavior: HitTestBehavior.opaque,
+          );
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.purple[400],
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text('Flutter App'),
         actions: <Widget>[
           IconButton(
@@ -73,8 +90,10 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {_startAddNewTransaction(context);},
-        backgroundColor: Colors.purple,
+        onPressed: () {
+          _startAddNewTransaction(context);
+        },
+        backgroundColor: Theme.of(context).accentColor,
         child: Icon(Icons.add),
       ),
     );
