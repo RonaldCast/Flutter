@@ -2,6 +2,7 @@ import 'package:app_admin/widgets/newTransaction.dart';
 import 'package:flutter/material.dart';
 import './models/transaction.dart';
 import './widgets/transaction_list.dart';
+import './widgets/chart.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,21 +13,22 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           textTheme: ThemeData.light().textTheme.copyWith(
-            title: TextStyle(fontFamily: "OpenSans",
-               fontSize: 18,
-               fontWeight: FontWeight.bold
-            )
-          ) ,
+              title: TextStyle(
+                  fontFamily: "OpenSans",
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold)),
           primarySwatch:
               Colors.red, //para darle a futuro diferentes tonalidades
           accentColor: Colors
               .green, //para realizar tonalidades y convinaciones este color se le aplica a los elementos segundario ofrecido por material
           fontFamily: 'Quicksand',
-           // para establecer la funte del tema
+          // para establecer la funte del tema
           appBarTheme: AppBarTheme(
               textTheme: ThemeData.light().textTheme.copyWith(
-                  title: TextStyle(fontFamily: 'OpenSans', fontSize: 20))) // sobre eescribe el tema por defecto
-                  ),
+                  title: TextStyle(
+                      fontFamily: 'OpenSans',
+                      fontSize: 20))) // sobre eescribe el tema por defecto
+          ),
       home: MyHomePage(),
     );
   }
@@ -48,6 +50,13 @@ class _MyHomePageState extends State<MyHomePage> {
     // Transaction(
     //     id: 't4', title: 'New Shoes', amount: 93.33, date: DateTime.now()),
   ];
+
+  List<Transaction> get _recentTransaction {
+    return _userTransaction.where((txt) {
+      return txt.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
+    }).toList();
+  }
+
   void _addNewTransaction(String txtitle, double txAmount) {
     final newTrans = Transaction(
         title: txtitle,
@@ -77,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title: Text('Flutter App'),
+        title: Text('Personal Expenses'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
@@ -86,7 +95,10 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Column(children: <Widget>[TransactionList(_userTransaction)]),
+        child: Column(children: <Widget>[
+          Chart(_recentTransaction),
+          TransactionList(_userTransaction)
+        ]),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
