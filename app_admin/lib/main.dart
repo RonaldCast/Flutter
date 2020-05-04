@@ -16,7 +16,8 @@ class MyApp extends StatelessWidget {
               title: TextStyle(
                   fontFamily: "OpenSans",
                   fontSize: 18,
-                  fontWeight: FontWeight.bold)),
+                  fontWeight: FontWeight.bold),
+              button: TextStyle(color: Colors.white, fontFamily: "OpenSans")),
           primarySwatch:
               Colors.red, //para darle a futuro diferentes tonalidades
           accentColor: Colors
@@ -41,14 +42,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransaction = [
-    // Transaction(
-    //     id: 't1', title: 'New Shoes', amount: 69.09, date: DateTime.now()),
-    // Transaction(
-    //     id: 't2', title: 'OK New ties', amount: 9.89, date: DateTime.now()),
-    // Transaction(
-    //     id: 't3', title: 'New short', amount: 24.43, date: DateTime.now()),
-    // Transaction(
-    //     id: 't4', title: 'New Shoes', amount: 93.33, date: DateTime.now()),
+    Transaction(
+        id: 't1', title: 'New Shoes', amount: 69.09, date: DateTime.now()),
+    Transaction(
+        id: 't2', title: 'OK New ties', amount: 9.89, date: DateTime.now()),
+    Transaction(
+        id: 't3', title: 'New short', amount: 24.43, date: DateTime.now()),
+    Transaction(
+        id: 't4', title: 'New Shoes', amount: 93.33, date: DateTime.now()),
   ];
 
   List<Transaction> get _recentTransaction {
@@ -57,11 +58,11 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  void _addNewTransaction(String txtitle, double txAmount) {
+  void _addNewTransaction(String txtitle, double txAmount, DateTime date) {
     final newTrans = Transaction(
         title: txtitle,
         amount: txAmount,
-        date: DateTime.now(),
+        date:date,
         id: DateTime.now().toString());
 
     setState(() {
@@ -97,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: SingleChildScrollView(
         child: Column(children: <Widget>[
           Chart(_recentTransaction),
-          TransactionList(_userTransaction)
+          TransactionList(_userTransaction.reversed.toList())
         ]),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

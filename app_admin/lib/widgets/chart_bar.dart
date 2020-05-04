@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class ChartBar extends StatelessWidget {
@@ -12,10 +11,14 @@ class ChartBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        FittedBox(
-          child:  Text('RD\$${spendingAmount.toStringAsFixed(0)}'),
+        Container(
+          height: 20,
+          child: FittedBox(
+            child: Text('RD\$${spendingAmount.toStringAsFixed(0)}',
+            style: TextStyle(fontSize: 1),),
+          ),
         ), // para adaptar en contenido al container y no sobre salga
-      
+
         SizedBox(height: 4),
         Container(
           width: 10,
@@ -23,7 +26,6 @@ class ChartBar extends StatelessWidget {
           child: Stack(
             children: <Widget>[
               Container(
-
                 decoration: BoxDecoration(
                     border: Border.all(
                       color: Colors.grey,
@@ -35,8 +37,8 @@ class ChartBar extends StatelessWidget {
               FractionallySizedBox(
                 heightFactor: spendingPcOfTotal,
                 child: Container(
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(20),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
                       color: Theme.of(context).primaryColor),
                 ),
               )

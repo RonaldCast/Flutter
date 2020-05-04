@@ -11,24 +11,63 @@ class TransactionList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 500,
-      child: transactions.isEmpty ? Column(
-        children: <Widget>[
-        SizedBox(height: 20),
-        Text(
-          'No Transactions added yet',
-          textAlign: TextAlign.center,
-           style: Theme.of(context).textTheme.title
-        ),
-        SizedBox(height: 20,),
-        Container(
-          height: 300,
-          child: Image.asset("assets/images/waiting.png", fit: BoxFit.cover),
-        )
+      height: 400,
+      child: transactions.isEmpty
+          ? Column(
+              children: <Widget>[
+                SizedBox(height: 20),
+                Text('No Transactions added yet',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.title),
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  height: 300,
+                  child: Image.asset("assets/images/waiting.png",
+                      fit: BoxFit.cover),
+                )
+              ],
+            )
+          : ListView.builder(
+              itemBuilder: (ctx, index) {
+                return Card(
+                  elevation: 6,
+                  margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      radius: 30,
+                      child: Padding(
+                        padding: EdgeInsets.all(7),
+                        child: FittedBox(
+                          child: Text('\$${transactions[index].amount}'),
+                        ),
+                      ),
+                    ),//widget for icon, image, etc.
+                    title: Text(
+                      transactions[index].title,
+                      style: Theme.of(context).textTheme.title,
+                    ),
+                    subtitle: Text(DateFormat.yMMMd().format(transactions[index]
+                        .date)),
+                      trailing: IconButton(icon: Icon(Icons.delete),
+                      color: Theme.of(context).errorColor,
+                      onPressed: () {},), //for button
+                  ),
+                );
+              },
+              itemCount: transactions.length,
 
-      ],) : ListView.builder(
-        itemBuilder: (ctx, index) {
-          return Card(
+              // ),
+            ),
+    );
+  }
+}
+
+/**
+ * 
+ * 
+ * Card(
             elevation: 5,
             child: Row(children: <Widget>[
               Container(
@@ -60,10 +99,4 @@ class TransactionList extends StatelessWidget {
             ]),
           );
         },
-        itemCount: transactions.length,
-
-        // ),
-      ),
-    );
-  }
-}
+ */
