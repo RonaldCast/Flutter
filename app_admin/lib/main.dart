@@ -6,16 +6,14 @@ import './models/transaction.dart';
 import './widgets/transaction_list.dart';
 import './widgets/chart.dart';
 
-void main(){
-  //  WidgetsFlutterBinding.ensureInitialized();//para que habilite la configuracion 
+void main() {
+  //  WidgetsFlutterBinding.ensureInitialized();//para que habilite la configuracion
   //  SystemChrome.setPreferredOrientations([
-  //    DeviceOrientation.portraitDown, // para que no cambie la orientacion 
+  //    DeviceOrientation.portraitDown, // para que no cambie la orientacion
   //    DeviceOrientation.portraitUp // para cambiar la ortientacion;
   //  ]); //permite realizar configuraciones
-   runApp(MyApp());
-  
-   
-   }
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -53,14 +51,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransaction = [
-    Transaction(
-        id: 't1', title: 'New Shoes', amount: 69.09, date: DateTime.now()),
-    Transaction(
-        id: 't2', title: 'OK New ties', amount: 9.89, date: DateTime.now()),
-    Transaction(
-        id: 't3', title: 'New short', amount: 24.43, date: DateTime.now()),
-    Transaction(
-        id: 't4', title: 'New Shoes', amount: 93.33, date: DateTime.now()),
+    // Transaction(
+    //     id: 't1', title: 'New Shoes', amount: 69.09, date: DateTime.now()),
+    // Transaction(
+    //     id: 't2', title: 'OK New ties', amount: 9.89, date: DateTime.now()),
+    // Transaction(
+    //     id: 't3', title: 'New short', amount: 24.43, date: DateTime.now()),
+    // Transaction(
+    //     id: 't4', title: 'New Shoes', amount: 93.33, date: DateTime.now()),
   ];
 
   List<Transaction> get _recentTransaction {
@@ -68,6 +66,8 @@ class _MyHomePageState extends State<MyHomePage> {
       return txt.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
     }).toList();
   }
+
+  bool _showChart = false;
 
   void _addNewTransaction(String txtitle, double txAmount, DateTime date) {
     final newTrans = Transaction(
@@ -101,6 +101,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // to know orientation
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
     final appBar = AppBar(
       backgroundColor: Theme.of(context).primaryColor,
       title: Text('Personal Expenses'),
@@ -111,22 +114,52 @@ class _MyHomePageState extends State<MyHomePage> {
         )
       ],
     );
+    final txListWidget = Container(
+        height: (MediaQuery.of(context).size.height -
+                appBar.preferredSize.height -
+                MediaQuery.of(context).padding.top) *
+            0.7,
+        child: TransactionList(
+            _userTransaction.reversed.toList(), _deleteTrasaction));
+
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
-        child: Column(children: <Widget>[
-          Container(
-              height: (MediaQuery.of(context).size.height -
-                      appBar.preferredSize.height - MediaQuery.of(context).padding.top) *
-                  0.3,
-              child: Chart(_recentTransaction)),
-          Container(
-              height: (MediaQuery.of(context).size.height -
-                      appBar.preferredSize.height - MediaQuery.of(context).padding.top) *
-                  0.7,
-              child: TransactionList(
-                  _userTransaction.reversed.toList(), _deleteTrasaction))
-        ]),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              if (isLandscape)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text("Show Chart"),
+                    Switch(
+                        value: _showChart,
+                        onChanged: (value) {
+                          setState(() {
+                            _showChart = value;
+                          });
+                          print(value);
+                        }),
+                  ],
+                ),
+                if(!isLandscape)
+                Container(
+                      height: (MediaQuery.of(context).size.height -
+                              appBar.preferredSize.height -
+                              MediaQuery.of(context).padding.top) *
+                          0.3,
+                      child: Chart(_recentTransaction)),
+                if(!isLandscape) txListWidget,
+              if(isLandscape) _showChart
+                  ? Container(
+                      height: (MediaQuery.of(context).size.height -
+                              appBar.preferredSize.height -
+                              MediaQuery.of(context).padding.top) *
+                          0.7,
+                      child: Chart(_recentTransaction))
+                  : txListWidget
+            ]),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
