@@ -1,10 +1,21 @@
-import 'package:app_admin/widgets/newTransaction.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; //para presentar los SytemChrome
+
+import 'package:app_admin/widgets/newTransaction.dart';
 import './models/transaction.dart';
 import './widgets/transaction_list.dart';
 import './widgets/chart.dart';
 
-void main() => runApp(MyApp());
+void main(){
+  //  WidgetsFlutterBinding.ensureInitialized();//para que habilite la configuracion 
+  //  SystemChrome.setPreferredOrientations([
+  //    DeviceOrientation.portraitDown, // para que no cambie la orientacion 
+  //    DeviceOrientation.portraitUp // para cambiar la ortientacion;
+  //  ]); //permite realizar configuraciones
+   runApp(MyApp());
+  
+   
+   }
 
 class MyApp extends StatelessWidget {
   @override
@@ -62,11 +73,17 @@ class _MyHomePageState extends State<MyHomePage> {
     final newTrans = Transaction(
         title: txtitle,
         amount: txAmount,
-        date:date,
+        date: date,
         id: DateTime.now().toString());
 
     setState(() {
       _userTransaction.add(newTrans);
+    });
+  }
+
+  void _deleteTrasaction(String id) {
+    setState(() {
+      _userTransaction.removeWhere((tx) => tx.id == id);
     });
   }
 
@@ -84,21 +101,31 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+      backgroundColor: Theme.of(context).primaryColor,
+      title: Text('Personal Expenses'),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => _startAddNewTransaction(context),
+        )
+      ],
+    );
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        title: Text('Personal Expenses'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => _startAddNewTransaction(context),
-          )
-        ],
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(children: <Widget>[
-          Chart(_recentTransaction),
-          TransactionList(_userTransaction.reversed.toList())
+          Container(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height - MediaQuery.of(context).padding.top) *
+                  0.3,
+              child: Chart(_recentTransaction)),
+          Container(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height - MediaQuery.of(context).padding.top) *
+                  0.7,
+              child: TransactionList(
+                  _userTransaction.reversed.toList(), _deleteTrasaction))
         ]),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
