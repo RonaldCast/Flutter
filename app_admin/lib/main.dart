@@ -1,3 +1,7 @@
+//este se utiliza para saber sobre el dispositivo
+import 'dart:io'; //debe ser el primero en importarse si se va a usar.
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; //para presentar los SytemChrome
 
@@ -133,7 +137,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text("Show Chart"),
-                    Switch(
+                    Switch.adaptive( // para adaptar a Ios and Android
+                      activeColor: Theme.of(context).accentColor, //[ara que tome el color adecuda y no el de cupertino]
                         value: _showChart,
                         onChanged: (value) {
                           setState(() {
@@ -162,7 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ]),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: Platform.isIOS ? Container : FloatingActionButton(
         onPressed: () {
           _startAddNewTransaction(context);
         },

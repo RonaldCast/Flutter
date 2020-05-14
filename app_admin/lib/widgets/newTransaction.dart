@@ -17,7 +17,7 @@ class _NewTransactionState extends State<NewTransaction> {
   DateTime _selectDate;
 
   void submitData() {
-    if(int.tryParse(amountController.text)  == null){
+    if (int.tryParse(amountController.text) == null) {
       return;
     }
     final enteredTitle = titleController.text;
@@ -52,56 +52,65 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-      child: Container(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Title',
+    return SingleChildScrollView(
+          child: Card(
+        elevation: 4,
+        child: Container(
+          padding: EdgeInsets.only(
+            top: 10,
+             // viewInseta nos da informacion sobre 
+            //cualquier cosa que este a nuestroa alcance
+            bottom: MediaQuery.of(context).viewInsets.bottom * 10, 
+            left: 10,
+            right: 10,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              TextField(
+                decoration: InputDecoration(
+                  labelText: 'Title',
+                ),
+                controller: titleController,
+                onSubmitted: (_) => submitData(),
+                //onChanged: (val) {titleInput = val;}
               ),
-              controller: titleController,
-              onSubmitted: (_) => submitData(),
-              //onChanged: (val) {titleInput = val;}
-            ),
-            TextField(
-              decoration: InputDecoration(labelText: 'Amount'),
-              controller: amountController,
-              keyboardType: TextInputType.number,
-              onSubmitted: (_) => submitData(),
-              //onChanged: (val) { amountInput = val;} ,
-            ),
-            Container(
-              height: 80,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                      child: Text(_selectDate == null
-                          ? 'No Date chosen!'
-                          : "Picked Date: " +
-                              DateFormat.yMd().format(_selectDate))),
-                  FlatButton(
-                    textColor: Theme.of(context).primaryColor,
-                    child: Text(
-                      "Choose Date",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    onPressed: _presentDatePicker,
-                  )
-                ],
+              TextField(
+                decoration: InputDecoration(labelText: 'Amount'),
+                controller: amountController,
+                keyboardType: TextInputType.number,
+                onSubmitted: (_) => submitData(),
+                //onChanged: (val) { amountInput = val;} ,
               ),
-            ),
-            RaisedButton(
-              textColor: Theme.of(context).textTheme.button.color,
-              child: Text('Add Transation'),
-              color: Theme.of(context).primaryColor,
-              hoverColor: Theme.of(context).primaryColor,
-              onPressed: submitData,
-            )
-          ],
+              Container(
+                height: 80,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                        child: Text(_selectDate == null
+                            ? 'No Date chosen!'
+                            : "Picked Date: " +
+                                DateFormat.yMd().format(_selectDate))),
+                    FlatButton(
+                      textColor: Theme.of(context).primaryColor,
+                      child: Text(
+                        "Choose Date",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      onPressed: _presentDatePicker,
+                    )
+                  ],
+                ),
+              ),
+              RaisedButton(
+                textColor: Theme.of(context).textTheme.button.color,
+                child: Text('Add Transation'),
+                color: Theme.of(context).primaryColor,
+                hoverColor: Theme.of(context).primaryColor,
+                onPressed: submitData,
+              )
+            ],
+          ),
         ),
       ),
     );
