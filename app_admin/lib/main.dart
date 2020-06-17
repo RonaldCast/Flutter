@@ -92,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _startAddNewTransaction(BuildContext ctx) {
-    showModalBottomSheet(
+    showModalBottomSheet( //modal
         context: ctx,
         builder: (_) {
           return GestureDetector(
@@ -103,32 +103,76 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
+  List<Widget> _buildLandscapeContent(AppBar appBar, Widget txListWidget) {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text("Show Chart", style: Theme.of(context).textTheme.title),
+          Switch.adaptive(
+              // para adaptar a Ios and Android
+              activeColor: Theme.of(context)
+                  .accentColor, //[ara que tome el color adecuda y no el de cupertino]
+              value: _showChart,
+              onChanged: (value) {
+                setState(() {
+                  _showChart = value;
+                });
+                print(value);
+              }),
+        ],
+      ),
+      _showChart
+          ? Container(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.7,
+              child: Chart(_recentTransaction))
+          : txListWidget
+    ];
+  }
+
+  List<Widget> _buildPortraitContent(AppBar appBar, Widget txListWidget) {
+    return [
+      Container(
+          height: (MediaQuery.of(context).size.height -
+                  appBar.preferredSize.height -
+                  MediaQuery.of(context).padding.top) *
+              0.3,
+          child: Chart(_recentTransaction)),
+      txListWidget
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     // to know orientation
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
-    final PreferredSizeWidget appBar = Platform.isIOS ? CupertinoNavigationBar(
-      middle: Text("Personal Expenses"),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          GestureDetector(
-            child: Icon(CupertinoIcons.add), //cupertino Icons
-            onTap: () => _startAddNewTransaction(context),
+    final PreferredSizeWidget appBar = Platform.isIOS
+        ? CupertinoNavigationBar(
+            middle: Text("Personal Expenses"),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                GestureDetector(
+                  child: Icon(CupertinoIcons.add), //cupertino Icons
+                  onTap: () => _startAddNewTransaction(context),
+                )
+              ],
+            ),
           )
-        ],
-      ),
-    ) : AppBar(
-      backgroundColor: Theme.of(context).primaryColor,
-      title: Text('Personal Expenses'),
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () => _startAddNewTransaction(context),
-        )
-      ],
-    );
+        : AppBar(
+            backgroundColor: Theme.of(context).primaryColor,
+            title: Text('Personal Expenses'),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () => _startAddNewTransaction(context),
+              )
+            ],
+          );
     final txListWidget = Container(
         height: (MediaQuery.of(context).size.height -
                 appBar.preferredSize.height -
@@ -137,52 +181,19 @@ class _MyHomePageState extends State<MyHomePage> {
         child: TransactionList(
             _userTransaction.reversed.toList(), _deleteTrasaction));
     print(appBar.preferredSize.height);
-    final pageBody = SafeArea( child:SingleChildScrollView(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    if (isLandscape)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text("Show Chart", style: Theme.of(context).textTheme.title),
-                          Switch.adaptive(
-                              // para adaptar a Ios and Android
-                              activeColor: Theme.of(context)
-                                  .accentColor, //[ara que tome el color adecuda y no el de cupertino]
-                              value: _showChart,
-                              onChanged: (value) {
-                                setState(() {
-                                  _showChart = value;
-                                });
-                                print(value);
-                              }),
-                        ],
-                      ),
-                    if (!isLandscape)
-                      Container(
-                          height: (MediaQuery.of(context).size.height -
-                                  appBar.preferredSize.height -
-                                  MediaQuery.of(context).padding.top) *
-                              0.3,
-                          child: Chart(_recentTransaction)),
-                    if (!isLandscape) txListWidget,
-                    if (isLandscape)
-                      _showChart
-                          ? Container(
-                              height: (MediaQuery.of(context).size.height -
-                                      appBar.preferredSize.height -
-                                      MediaQuery.of(context).padding.top) *
-                                  0.7,
-                              child: Chart(_recentTransaction))
-                          : txListWidget
-                  ]),
-            ));
+    final pageBody = SafeArea(
+        child: SingleChildScrollView(
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+          if (isLandscape) ..._buildLandscapeContent(appBar, txListWidget),
+          if (!isLandscape) ..._buildPortraitContent(appBar, txListWidget)
+        ])));
     return Platform.isIOS
         ? CupertinoPageScaffold(child: pageBody, navigationBar: appBar)
         : Scaffold(
             appBar: appBar,
-            body:pageBody,
+            body: pageBody,
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
             floatingActionButton: Platform.isIOS
