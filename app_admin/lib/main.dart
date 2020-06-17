@@ -1,8 +1,8 @@
 //este se utiliza para saber sobre el dispositivo
 import 'dart:io'; //debe ser el primero en importarse si se va a usar.
 
-
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart'; //para presentar los SytemChrome
 
 import 'package:app_admin/widgets/newTransaction.dart';
@@ -108,7 +108,18 @@ class _MyHomePageState extends State<MyHomePage> {
     // to know orientation
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
-    final appBar = AppBar(
+    final PreferredSizeWidget appBar = Platform.isIOS ? CupertinoNavigationBar(
+      middle: Text("Personal Expenses"),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          GestureDetector(
+            child: Icon(CupertinoIcons.add), //cupertino Icons
+            onTap: () => _startAddNewTransaction(context),
+          )
+        ],
+      ),
+    ) : AppBar(
       backgroundColor: Theme.of(context).primaryColor,
       title: Text('Personal Expenses'),
       actions: <Widget>[
@@ -125,55 +136,64 @@ class _MyHomePageState extends State<MyHomePage> {
             0.7,
         child: TransactionList(
             _userTransaction.reversed.toList(), _deleteTrasaction));
-
-    return Scaffold(
-      appBar: appBar,
-      body: SingleChildScrollView(
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              if (isLandscape)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+    print(appBar.preferredSize.height);
+    final pageBody = SafeArea( child:SingleChildScrollView(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Text("Show Chart"),
-                    Switch.adaptive( // para adaptar a Ios and Android
-                      activeColor: Theme.of(context).accentColor, //[ara que tome el color adecuda y no el de cupertino]
-                        value: _showChart,
-                        onChanged: (value) {
-                          setState(() {
-                            _showChart = value;
-                          });
-                          print(value);
-                        }),
-                  ],
-                ),
-                if(!isLandscape)
-                Container(
-                      height: (MediaQuery.of(context).size.height -
-                              appBar.preferredSize.height -
-                              MediaQuery.of(context).padding.top) *
-                          0.3,
-                      child: Chart(_recentTransaction)),
-                if(!isLandscape) txListWidget,
-              if(isLandscape) _showChart
-                  ? Container(
-                      height: (MediaQuery.of(context).size.height -
-                              appBar.preferredSize.height -
-                              MediaQuery.of(context).padding.top) *
-                          0.7,
-                      child: Chart(_recentTransaction))
-                  : txListWidget
-            ]),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Platform.isIOS ? Container : FloatingActionButton(
-        onPressed: () {
-          _startAddNewTransaction(context);
-        },
-        backgroundColor: Theme.of(context).accentColor,
-        child: Icon(Icons.add),
-      ),
-    );
+                    if (isLandscape)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text("Show Chart", style: Theme.of(context).textTheme.title),
+                          Switch.adaptive(
+                              // para adaptar a Ios and Android
+                              activeColor: Theme.of(context)
+                                  .accentColor, //[ara que tome el color adecuda y no el de cupertino]
+                              value: _showChart,
+                              onChanged: (value) {
+                                setState(() {
+                                  _showChart = value;
+                                });
+                                print(value);
+                              }),
+                        ],
+                      ),
+                    if (!isLandscape)
+                      Container(
+                          height: (MediaQuery.of(context).size.height -
+                                  appBar.preferredSize.height -
+                                  MediaQuery.of(context).padding.top) *
+                              0.3,
+                          child: Chart(_recentTransaction)),
+                    if (!isLandscape) txListWidget,
+                    if (isLandscape)
+                      _showChart
+                          ? Container(
+                              height: (MediaQuery.of(context).size.height -
+                                      appBar.preferredSize.height -
+                                      MediaQuery.of(context).padding.top) *
+                                  0.7,
+                              child: Chart(_recentTransaction))
+                          : txListWidget
+                  ]),
+            ));
+    return Platform.isIOS
+        ? CupertinoPageScaffold(child: pageBody, navigationBar: appBar)
+        : Scaffold(
+            appBar: appBar,
+            body:pageBody,
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+            floatingActionButton: Platform.isIOS
+                ? Container
+                : FloatingActionButton(
+                    onPressed: () {
+                      _startAddNewTransaction(context);
+                    },
+                    backgroundColor: Theme.of(context).accentColor,
+                    child: Icon(Icons.add),
+                  ),
+          );
   }
 }
