@@ -52,8 +52,8 @@ class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
-
-class _MyHomePageState extends State<MyHomePage> {
+//mixin
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   final List<Transaction> _userTransaction = [
     // Transaction(
     //     id: 't1', title: 'New Shoes', amount: 69.09, date: DateTime.now()),
@@ -73,6 +73,28 @@ class _MyHomePageState extends State<MyHomePage> {
 
   bool _showChart = false;
 
+@override
+  void initState() {
+    // TODO: implement initState
+    //add observer la misma clase
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+  }
+
+@override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // TODO: implement didChangeAppLifecycleState
+    print(state);
+
+    super.didChangeAppLifecycleState(state);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    WidgetsBinding.instance.removeObserver(this); //eiminar todos los eyente del cico de vida
+    super.dispose();
+  }
   void _addNewTransaction(String txtitle, double txAmount, DateTime date) {
     final newTrans = Transaction(
         title: txtitle,
