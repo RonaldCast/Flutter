@@ -52,6 +52,7 @@ class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
+
 //mixin
 class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   final List<Transaction> _userTransaction = [
@@ -73,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   bool _showChart = false;
 
-@override
+  @override
   void initState() {
     // TODO: implement initState
     //add observer la misma clase
@@ -81,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     super.initState();
   }
 
-@override
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     // TODO: implement didChangeAppLifecycleState
     print(state);
@@ -92,9 +93,11 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   @override
   void dispose() {
     // TODO: implement dispose
-    WidgetsBinding.instance.removeObserver(this); //eiminar todos los eyente del cico de vida
+    WidgetsBinding.instance
+        .removeObserver(this); //eiminar todos los eyente del cico de vida
     super.dispose();
   }
+
   void _addNewTransaction(String txtitle, double txAmount, DateTime date) {
     final newTrans = Transaction(
         title: txtitle,
@@ -114,7 +117,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   }
 
   void _startAddNewTransaction(BuildContext ctx) {
-    showModalBottomSheet( //modal
+    showModalBottomSheet(
+        //modal
         context: ctx,
         builder: (_) {
           return GestureDetector(
