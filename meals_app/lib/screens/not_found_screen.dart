@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 class NotFoundScreen extends StatelessWidget{
  @override
   Widget build(BuildContext context) {
+    // ignore: todo
     // TODO: implement build
     return 
     Scaffold(body: Container(

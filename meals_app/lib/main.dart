@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import './screens/tabs_screen.dart';
+import 'package:meals_app/screens/tabs_screen.dart';
+import './screens/categories_screen.dart';
+// import './screens/tabs_screen.dart';
 import './screens/category_meals_scree.dart';
 import './screens/meal_detail_screen.dart';
 import './screens/not_found_screen.dart';
@@ -28,11 +30,12 @@ class MyApp extends StatelessWidget {
       
       initialRoute: "/", //default router 
       routes:{
-        "/": (ctx) => TabsScreen(), //default router
+        "/": (ctx) =>  TabsScreen(),//default router CategoriesScreen(),
        CategoryMealsScreen.routeName: (ctx) => CategoryMealsScreen(),
        MealDetailScreen.routeName: (ctx) => MealDetailScreen() 
       },
       //genera la ruta mapea todo las rutas que no estan registradas
+      // ignore: missing_return
       onGenerateRoute: (setting) {
         print(setting.arguments);
         // return MaterialPageRoute(builder: (ctx) => CategoriesScreen());
