@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 
 import '../dummy_data.dart';
@@ -33,8 +31,8 @@ class MealDetailScreen extends StatelessWidget {
     final selectedMeal = DUMMY_MEALS.firstWhere((meal) => meal.id == mealId);
     return Scaffold(
       appBar: AppBar(title: Text('${selectedMeal.title}')),
-      body: SingleChildScrollView (
-              child: Column(
+      body: SingleChildScrollView(
+        child: Column(
           children: <Widget>[
             Container(
               height: 300,
@@ -60,17 +58,28 @@ class MealDetailScreen extends StatelessWidget {
             selectedTitle(context, "Steps"),
             buildContainer(ListView.builder(
               itemBuilder: (ctx, index) => Column(
-                              children:[ ListTile(
-                  leading: CircleAvatar(
-                    child: Text('# ${(index + 1)}'),
+                children: [
+                  ListTile(
+                    leading: CircleAvatar(
+                      child: Text('# ${(index + 1)}'),
+                    ),
+                    title: Text(selectedMeal.steps[index]),
                   ),
-                  title: Text( selectedMeal.steps[index]),
-                ), Divider( color: Colors.grey,)],
+                  Divider(
+                    color: Colors.grey,
+                  )
+                ],
               ),
               itemCount: selectedMeal.steps.length,
             ))
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.delete),
+        onPressed: (){
+          Navigator.of(context).pop(mealId);
+        },
       ),
     );
   }
