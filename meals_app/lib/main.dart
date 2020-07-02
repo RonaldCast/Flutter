@@ -24,6 +24,7 @@ class _MyAppState extends State<MyApp> {
   };
  
  List<Meal> _availableMeals = DUMMY_MEALS;
+ List<Meal> _favoritedMeals = [];
 
   void _setFilters(Map<String, bool> filterData){
     setState(() {
@@ -46,7 +47,29 @@ class _MyAppState extends State<MyApp> {
        }).toList();
     });
   }
+  void _toggleFavorite(String mealID ){
+    final existingIndex =_favoritedMeals.indexWhere((meal) => meal.id == mealID);
 
+
+    if(existingIndex >= 0){
+      setState(() {
+        _favoritedMeals.removeAt(existingIndex);
+      });
+           
+    }else{
+      setState(() {
+         _favoritedMeals.add( 
+           DUMMY_MEALS.firstWhere((meal) => meal.id == mealID)
+         );
+      });
+
+    }
+   
+  }
+   
+   bool _isMealFavorite(String id){
+     return _favoritedMeals.any((meal) => meal.id == id);
+   }
 
   @override
   Widget build(BuildContext context) {
@@ -69,10 +92,10 @@ class _MyAppState extends State<MyApp> {
       
       initialRoute: "/", //default router 
       routes:{
-        "/": (ctx) =>  TabsScreen(),//default router CategoriesScreen(),
+        "/": (ctx) =>  TabsScreen(_favoritedMeals),//default router CategoriesScreen(),
       FiltersScreen.routeName: (ctx) => FiltersScreen(_filters,_setFilters),
        CategoryMealsScreen.routeName: (ctx) => CategoryMealsScreen(_availableMeals),
-       MealDetailScreen.routeName: (ctx) => MealDetailScreen() 
+       MealDetailScreen.routeName: (ctx) => MealDetailScreen(_toggleFavorite, _isMealFavorite) 
       },
       //genera la ruta mapea todo las rutas que no estan registradas
       // ignore: missing_return
