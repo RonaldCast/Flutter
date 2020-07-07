@@ -42,9 +42,12 @@ class MealDetailScreen extends StatelessWidget {
             Container(
               height: 300,
               width: double.infinity,
-              child: Image.network(
-                selectedMeal.imageUrl,
-                fit: BoxFit.cover,
+              child: Hero(
+                tag: mealId,
+                child: Image.network(
+                  selectedMeal.imageUrl,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             selectedTitle(context, "Ingredients"),
@@ -76,7 +79,8 @@ class MealDetailScreen extends StatelessWidget {
                 ],
               ),
               itemCount: selectedMeal.steps.length,
-            ))
+            )),
+            SizedBox(height: 40,)
           ],
         ),
       ),

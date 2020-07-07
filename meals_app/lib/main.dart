@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import './dummy_data.dart';
 import './screens/tabs_screen.dart';
 import './models/meal.dart';
-// import './screens/tabs_screen.dart';
 import './screens/category_meals_scree.dart';
 import './screens/meal_detail_screen.dart';
 import './screens/not_found_screen.dart';

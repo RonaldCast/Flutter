@@ -11,16 +11,14 @@ class MealItem extends StatelessWidget {
   final Complexity complexity;
   final Affordability affordability;
 
-  MealItem(
-      {
-        @required this.id,
-      @required this.title,
-      @required this.imageUrl,
-      @required this.duration,
-      @required this.complexity,
-      @required this.affordability, 
-     }
-      );
+  MealItem({
+    @required this.id,
+    @required this.title,
+    @required this.imageUrl,
+    @required this.duration,
+    @required this.complexity,
+    @required this.affordability,
+  });
 
   String get complexityText {
     switch (complexity) {
@@ -37,8 +35,8 @@ class MealItem extends StatelessWidget {
     }
   }
 
-  String get affordabilityText{
-     switch (affordability) {
+  String get affordabilityText {
+    switch (affordability) {
       case Affordability.Affordable:
         return 'Affordable';
 
@@ -53,20 +51,24 @@ class MealItem extends StatelessWidget {
   }
 
   void selectMeal(BuildContext ctx) {
-    Navigator.of(ctx).pushNamed(MealDetailScreen.routeName, arguments:  id).then( (result) => {
-      if(result != null){
-        //  removeItem(result)
-      }
-     
-    });
+    Navigator.of(ctx)
+        .pushNamed(MealDetailScreen.routeName, arguments: id)
+        .then((result) => {
+              if (result != null)
+                {
+                  //  removeItem(result)
+                }
+            });
   }
+
   @override
   Widget build(BuildContext context) {
     return Material(
-          child: InkWell(
+      child: GestureDetector(
         onTap: () => selectMeal(context),
         child: Card(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           elevation: 4,
           margin: EdgeInsets.all(10),
           child: Column(
@@ -74,11 +76,14 @@ class MealItem extends StatelessWidget {
               Stack(
                 children: <Widget>[
                   ClipRRect(
-                    child: Image.network(
-                      imageUrl,
-                      height: 250,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
+                    child: Hero(
+                      tag: id,
+                      child: Image.network(
+                        imageUrl,
+                        height: 250,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(15),
@@ -88,7 +93,8 @@ class MealItem extends StatelessWidget {
                     bottom: 20,
                     right: 10,
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                       width: 300,
                       color: Colors.black54,
                       child: Text(

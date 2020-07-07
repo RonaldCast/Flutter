@@ -47,9 +47,9 @@ class _FiltersScreenState extends State<FiltersScreen> {
               onPressed: () {
                 final selectedFilters = {
                   'gluten': _glutenFree,
-                  'lactose': _vegetarian,
+                  'lactose': _lactoseFree,
                   'vegan': _vegan,
-                  'vegetarian': _lactoseFree
+                  'vegetarian':  _vegetarian
                 };
                 widget.saveFilters(selectedFilters);
               },
