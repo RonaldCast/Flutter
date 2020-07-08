@@ -1,7 +1,7 @@
 
 
 import 'package:flutter/material.dart';
-import '../models/product.dart';
+import 'product.dart';
 
 //ChangeNotifier trabaja con provider esta utiliza VoidCallback para notificar
 class Products with ChangeNotifier{
@@ -43,6 +43,10 @@ class Products with ChangeNotifier{
 
   List<Product> get items {
     return _items;
+  }
+
+  Product findById(String id){
+    return _items.firstWhere((element) => element.id == id);
   }
 
   void addProvider(){
