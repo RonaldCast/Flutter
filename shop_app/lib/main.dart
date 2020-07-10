@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     // hijo que esten escuchen el cambio del state de products (provider)
     // solo lo widget que esten escuchando de modificaran.  
     return ChangeNotifierProvider(
-       create: (ctx)  => Products(), // para retorna el proveedor 
+       create: (_) => Products(), // para retorna el proveedor 
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
