@@ -1,13 +1,11 @@
-
-
 import 'package:flutter/material.dart';
 import 'product.dart';
 
 //ChangeNotifier trabaja con provider esta utiliza VoidCallback para notificar
-class Products with ChangeNotifier{
+class Products with ChangeNotifier {
   // ignore: unused_field
   List<Product> _items = [
-     Product(
+    Product(
       id: 'p1',
       title: 'Red Shirt',
       description: 'A red shirt - it is pretty red!',
@@ -41,17 +39,31 @@ class Products with ChangeNotifier{
     ),
   ];
 
+  var _showFavoritesOnly = false;
   List<Product> get items {
     return _items;
   }
 
-  Product findById(String id){
+  List<Product> get favoriteItems {
+    return _items.where((item) => item.isFavorite).toList();
+  }
+
+  // void showFavoritesOnly(){
+  //   _showFavoritesOnly =  true;
+  //    notifyListeners();
+  // }
+
+  // void showAll(){
+  //   _showFavoritesOnly =  false;
+  //   notifyListeners(); //para renderizar
+  // }
+
+  Product findById(String id) {
     return _items.firstWhere((element) => element.id == id);
   }
 
-  void addProvider(){
+  void addProvider() {
     // _items.add(value);
     notifyListeners();
   }
-
 }
