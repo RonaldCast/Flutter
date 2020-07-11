@@ -4,6 +4,7 @@ import './screens/products_overview_screen.dart';
 import './providers/products.dart';
 import 'package:provider/provider.dart';
 import './providers/cart.dart';
+import './screens/cart_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -25,7 +26,8 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
             primarySwatch: Colors.purple, accentColor: Colors.deepOrange),
         home: ProductOverviewcSreen(),
-        routes: {ProductDetailScreen.routeName: (ctx) => ProductDetailScreen()},
+        routes: {ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
+        CartScreen.routeName: (ctx) => CartScreen()},
       ),
     );
   }
