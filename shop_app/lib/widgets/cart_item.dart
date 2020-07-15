@@ -16,19 +16,46 @@ class CartItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dismissible(
       direction: DismissDirection.endToStart,
-      onDismissed: (direction){
-       Provider.of<Cart>(context, listen: false).removeItem(productId);
+      onDismissed: (direction) {
+        Provider.of<Cart>(context, listen: false).removeItem(productId);
+      },
+      confirmDismiss: (directtion) {
+        return showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+                  title: Text("Are you sure?"),
+                  content:
+                      Text("Do you want to remove the item from the cart?"),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text("No"),
+                      onPressed: () {
+                        Navigator.of(context).pop(false);
+                      },
+                    ),
+                    FlatButton(
+                      child: Text("Si"),
+                      onPressed: () {
+                        Navigator.of(context).pop(true);
+                        Scaffold.of(context).showSnackBar(SnackBar(
+                          content: Text("Deleted product"),
+                        ));
+                      },
+                    )
+                  ],
+                ));
       },
       key: ValueKey(id),
       background: Container(
-        padding: EdgeInsets.all(10),
-        margin: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
-        alignment: Alignment.centerRight,
-        color: Theme.of(context).errorColor,
-      child: Icon(Icons.delete,
-      color: Colors.white,
-      size: 40,
-      )),
+          padding: EdgeInsets.all(10),
+          margin: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+          alignment: Alignment.centerRight,
+          color: Theme.of(context).errorColor,
+          child: Icon(
+            Icons.delete,
+            color: Colors.white,
+            size: 40,
+          )),
       child: Card(
         margin: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
         child: Padding(
