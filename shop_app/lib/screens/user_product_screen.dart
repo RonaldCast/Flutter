@@ -5,10 +5,12 @@ import '../widgets/user_product_item.dart';
 import '../widgets/app_drawer.dart';
 import '../screens/edit_product_screen.dart';
 
+
 class UserProductScreen extends StatelessWidget {
   static const routeName = '/user-product';
   @override
   Widget build(BuildContext context) {
+   
     final productsData = Provider.of<Products>(context);
     return Scaffold(
         drawer: AppDrawer(),
@@ -29,7 +31,9 @@ class UserProductScreen extends StatelessWidget {
             itemCount: productsData.items.length,
             itemBuilder: (_, i) => Column(
               children: <Widget>[
-                UserProductItem(productsData.items[i].title,
+                UserProductItem(
+                    productsData.items[i].id,
+                    productsData.items[i].title,
                     productsData.items[i].imageUrl),
                 Divider()
               ],
