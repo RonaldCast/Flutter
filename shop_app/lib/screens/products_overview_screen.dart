@@ -4,6 +4,7 @@ import '../widgets/product_grid.dart';
 import 'package:provider/provider.dart';
 import '../providers/cart.dart';
 import '../screens/cart_screen.dart';
+import '../providers/products.dart';
 
 import '../widgets/badge.dart';
 import '../widgets/app_drawer.dart';
@@ -17,6 +18,36 @@ class ProductOverviewcSreen extends StatefulWidget {
 
 class _ProductOverviewcSreenState extends State<ProductOverviewcSreen> {
   bool _showOnlyFavotite = false;
+  bool _isLoading = false;
+  bool _isInit = true;
+  @override
+  void initState() {
+    //  Provider.of<Products>(context, listen: false).fetchAndSetProduct(); work
+    //  Provider.of<Products>(context).fetchAndSetProduct(); don't work
+    // Future.delayed( Duration.zero).then((value){
+    //    Provider.of<Products>(context).fetchAndSetProduct();
+    // });
+
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      Provider.of<Products>(context).fetchAndSetProduct().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +84,7 @@ class _ProductOverviewcSreenState extends State<ProductOverviewcSreen> {
               ))
         ],
       ),
-      body: ProductGrid(_showOnlyFavotite),
+      body: _isLoading ? Center(child: CircularProgressIndicator(),) : ProductGrid(_showOnlyFavotite),
       drawer: AppDrawer(),
     );
   }

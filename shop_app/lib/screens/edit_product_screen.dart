@@ -69,7 +69,7 @@ class _EditProductState extends State<EditProductScreen> {
     }
   }
 
-  void _saveForm() {
+  Future<void> _saveForm() async {
     //guarda cada datos de los formularios
     //si no se pone le currentState.save() no se guarda el valor de cada input.
     final isValid = _form.currentState.validate();
@@ -81,14 +81,22 @@ class _EditProductState extends State<EditProductScreen> {
       _isLoading = true;
     });
     if (_editedProduct.id != null) {
-      Provider.of<Products>(context, listen: false)
-          .updateProduct(_editedProduct.id, _editedProduct);
+      try {
+        await Provider.of<Products>(context, listen: false)
+            .updateProduct(_editedProduct.id, _editedProduct);
+      } catch (e) {} finally {
+        setState(() {
+          _isLoading = false;
+        });
+        Navigator.of(context).pop();
+      }
     } else {
-      Provider.of<Products>(context, listen: false)
-          .addProduct(_editedProduct)
-          .catchError((error) {
-        print(error.toString());
-         return showDialog(
+      try {
+        await Provider.of<Products>(context, listen: false)
+            .addProduct(_editedProduct);
+      } catch (e) {
+        print("int Catch");
+        await showDialog(
             context: context,
             builder: (ctx) => AlertDialog(
                   title: Text("An error occured!"),
@@ -98,19 +106,18 @@ class _EditProductState extends State<EditProductScreen> {
                       child: Text("Okay"),
                       onPressed: () {
                         Navigator.of(ctx).pop();
-                      
                       },
                     )
                   ],
-                )).then((value) => null);
-      }).then((_) {
-        print("object then");
-        setState(() {
+                ));
+      } finally {
+      
+      }
+    }
+      setState(() {
           _isLoading = false;
         });
         Navigator.of(context).pop();
-      });
-    }
   }
 
   @override

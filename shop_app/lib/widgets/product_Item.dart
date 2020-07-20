@@ -5,6 +5,7 @@ import '../screens/product_detail_screen.dart';
 import 'package:provider/provider.dart';
 
 class ProductItem extends StatelessWidget {
+
   
   @override
   Widget build(BuildContext context) {
@@ -31,8 +32,13 @@ class ProductItem extends StatelessWidget {
               color: Theme.of(context).accentColor,
               icon: Icon(
                   product.isFavorite ? Icons.favorite : Icons.favorite_border),
-              onPressed: () {
-                product.toggleFavoriteStatus();
+              onPressed: () async {
+                try {
+                  await product.toggleFavoriteStatus();
+                } catch (e) {
+                  Scaffold.of(context).showSnackBar(SnackBar(content: Text("Favotite faile"),));
+                }
+               
               },
             ),
           ),
