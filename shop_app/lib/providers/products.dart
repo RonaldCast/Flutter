@@ -76,9 +76,9 @@ class Products with ChangeNotifier {
     notifyListeners();
   }
 
-  void addProvider(Product product) {
-    const url = 'https://flutter-update-59d81.firebaseio.com/products.json';
-    http
+  Future<void> addProduct(Product product) {
+    const url = 'https://flutter-update-59d81.firebaseio.com/products';
+    return http
         .post(url,
             body: json.encode({
               'title': product.title,
@@ -94,10 +94,12 @@ class Products with ChangeNotifier {
         description: product.description,
         price: product.price,
         imageUrl: product.imageUrl,
-        id:json.decode(resp.body)['name'],
+        id: json.decode(resp.body)['name'],
       );
       _items.add(newProduct);
       notifyListeners();
+    }).catchError((error) {
+      throw error;
     });
   }
 
