@@ -19,21 +19,22 @@ class Cart with ChangeNotifier {
   Map<String, CartItem> get items {
     return _items;
   }
-  
-  int get itemCount{
-    return _items == null ? 0 :  _items.length;
+
+  int get itemCount {
+    return _items == null ? 0 : _items.length;
   }
 
-  double get totalAmount{
+  double get totalAmount {
     var total = 0.0;
     _items.forEach((key, value) {
-        total += value.price * value.quatity;
+      total += value.price * value.quatity;
     });
 
     return total;
   }
 
   void addItem(String productId, double price, String title) {
+    final url = 'https://flutter-update-59d81.firebaseio.com/cart.json';
     if (_items.containsKey(productId)) {
       _items.update(
           productId,
@@ -54,29 +55,30 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
-  void removeItem(String productId){
+  void removeItem(String productId) {
     _items.remove(productId);
     notifyListeners();
   }
 
- void removeSingleItem(String productId){
-   if(!_items.containsKey((productId))){
-     return;
-   }
-   if(_items[productId].quatity > 1){
-     _items.update(productId,
+  void removeSingleItem(String productId) {
+    if (!_items.containsKey((productId))) {
+      return;
+    }
+    if (_items[productId].quatity > 1) {
+      _items.update(
+          productId,
           (value) => CartItem(
               id: value.id,
               title: value.title,
               price: value.price,
-              quatity: value.quatity -1));
-   }else{
-     _items.remove(productId);
-   }
+              quatity: value.quatity - 1));
+    } else {
+      _items.remove(productId);
+    }
     notifyListeners();
- }
+  }
 
-  void clear(){
+  void clear() {
     _items = {};
     notifyListeners();
   }
