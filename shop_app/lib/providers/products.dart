@@ -61,7 +61,7 @@ class Products with ChangeNotifier {
       _items = loadedProduct;
       notifyListeners();
     } catch (e) {
-      throw e;
+      throw HttpException("Not load product");
     }
   }
 

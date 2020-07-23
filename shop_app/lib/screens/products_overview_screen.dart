@@ -33,18 +33,18 @@ class _ProductOverviewcSreenState extends State<ProductOverviewcSreen> {
 
   @override
   void didChangeDependencies() {
-    if (_isInit) {
-      setState(() {
-        _isLoading = true;
-      });
+    // if (_isInit) {
+    //   setState(() {
+    //     _isLoading = true;
+    //   });
 
-      Provider.of<Products>(context).fetchAndSetProduct().then((_) {
-        setState(() {
-          _isLoading = false;
-        });
-      });
-    }
-    _isInit = false;
+    //   Provider.of<Products>(context).fetchAndSetProduct().then((_) {
+    //     setState(() {
+    //       _isLoading = false;
+    //     });
+    //   });
+    // }
+    // _isInit = false;
     super.didChangeDependencies();
   }
 
@@ -84,7 +84,18 @@ class _ProductOverviewcSreenState extends State<ProductOverviewcSreen> {
               ))
         ],
       ),
-      body: _isLoading ? Center(child: CircularProgressIndicator(),) : ProductGrid(_showOnlyFavotite),
+      body: FutureBuilder(future:  Provider.of<Products>(context).fetchAndSetProduct()
+       ,builder: (ctx, snap) {
+         if(snap.connectionState == ConnectionState.waiting){
+           return Center(child: CircularProgressIndicator());
+         }else{
+            if(snap.error != null){
+                return Center(child: Text("Error"));
+            }else{
+              return ProductGrid(_showOnlyFavotite);
+            } 
+         }
+       },),
       drawer: AppDrawer(),
     );
   }

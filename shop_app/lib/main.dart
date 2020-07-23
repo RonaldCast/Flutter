@@ -9,6 +9,8 @@ import './providers/orders.dart';
 import './screens/orders_screem.dart';
 import './screens/user_product_screen.dart';
 import './screens/edit_product_screen.dart';
+import './screens/auth_screen.dart';
+import "./providers/auth.dart";
 
 void main() => runApp(MyApp());
 
@@ -20,6 +22,7 @@ class MyApp extends StatelessWidget {
     // solo lo widget que esten escuchando de modificaran.
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(value: Auth()),
         ChangeNotifierProvider(create: (ctx) => Products()),
         ChangeNotifierProvider(create: (ctx) => Cart()),
         ChangeNotifierProvider(create: (ctx) => Orders()),
@@ -29,7 +32,7 @@ class MyApp extends StatelessWidget {
         title: 'Myshop',
         theme: ThemeData(
             primarySwatch: Colors.purple, accentColor: Colors.deepOrange),
-        home: ProductOverviewcSreen(),
+        home: AuthScreen(),
         routes: {
           ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
           CartScreen.routeName: (ctx) => CartScreen(),
