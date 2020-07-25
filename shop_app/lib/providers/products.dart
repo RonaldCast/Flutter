@@ -22,6 +22,9 @@ class Products with ChangeNotifier {
     return _items.firstWhere((element) => element.id == id);
   }
 
+  final authToken;
+  Products(this.authToken, this._items);
+
   Future<void> updateProduct(String id, Product newProduct) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
@@ -44,7 +47,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProduct() async {
-    const url = 'https://flutter-update-59d81.firebaseio.com/products.json';
+    final url = 'https://flutter-update-59d81.firebaseio.com/products.json?auth=$authToken';
     try {
       final resp = await http.get(url);
       final extractedData = json.decode(resp.body) as Map<String, dynamic>;

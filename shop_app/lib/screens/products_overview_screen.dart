@@ -11,12 +11,12 @@ import '../widgets/app_drawer.dart';
 
 enum FilterOption { Favorites, All }
 
-class ProductOverviewcSreen extends StatefulWidget {
+class ProductOverviewScreen extends StatefulWidget {
   @override
-  _ProductOverviewcSreenState createState() => _ProductOverviewcSreenState();
+  _ProductOverviewScreenState createState() => _ProductOverviewScreenState();
 }
 
-class _ProductOverviewcSreenState extends State<ProductOverviewcSreen> {
+class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   bool _showOnlyFavotite = false;
   bool _isLoading = false;
   bool _isInit = true;
@@ -84,7 +84,7 @@ class _ProductOverviewcSreenState extends State<ProductOverviewcSreen> {
               ))
         ],
       ),
-      body: FutureBuilder(future:  Provider.of<Products>(context).fetchAndSetProduct()
+      body: FutureBuilder(future:  Provider.of<Products>(context, listen: false).fetchAndSetProduct()
        ,builder: (ctx, snap) {
          if(snap.connectionState == ConnectionState.waiting){
            return Center(child: CircularProgressIndicator());
