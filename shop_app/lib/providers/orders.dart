@@ -23,8 +23,16 @@ class Orders with ChangeNotifier {
     return _orders;
   }
 
-  Future<void> fetchAndSetOrders() async {
-    const url = 'https://flutter-update-59d81.firebaseio.com/orders.json';
+  final String authToken;
+  final String userId;
+
+  Orders(this.authToken, this._orders, this.userId);
+
+  Future<void> fetchAndSetOrders([bool filterByUser = false]) async {
+     
+    final url =
+        'https://flutter-update-59d81.firebaseio.com/orders/$userId.json?auth=$authToken';
+        
     final resp = await http.get(url);
     final List<OrderItem> loadedOrders = [];
     final extractedData = json.decode(resp.body) as Map<String, dynamic>;
@@ -35,7 +43,8 @@ class Orders with ChangeNotifier {
     extractedData.forEach((orderId, orderData) {
       loadedOrders.add(OrderItem(
           id: orderId,
-          amount: orderData['amount'],
+          amount: orderData
+          ['amount'],
           dateTime: DateTime.parse(orderData['dateTime']),
           products: (orderData['product'] as List<dynamic>)
               .map((item) => CartItem(
