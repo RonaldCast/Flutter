@@ -15,3 +15,17 @@ You also need to tweak the Android build system to work with `flutter_secure_sto
 ## iOS
 
 iOS default settings work with the project dependencies without any modifications. You can set the callback scheme by adding the following entry to the `<dict>` element present in the `ios/Runner/Info.plist` file:
+
+```
+   <key>CFBundleURLTypes</key>
+   <array>
+      <dict>
+         <key>CFBundleTypeRole</key>
+         <string>Editor</string>
+         <key>CFBundleURLSchemes</key>
+         <array>
+            <string>com.auth0.flutterdemo</string>
+         </array>
+      </dict>
+   </array>
+```
