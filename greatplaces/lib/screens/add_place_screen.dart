@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:provider/provider.dart';
 import '../providers/great_place.dart';
 
+import '../widgets/location_input.dart';
+
 
 class AddPlaceScreen extends StatefulWidget {
   static const routeName = '/add-place';
@@ -49,7 +51,9 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                       decoration: InputDecoration(labelText: 'Title'),
                     ),
                     SizedBox(height: 10),
-                    ImageInput(_selectImage)
+                    ImageInput(_selectImage),
+                    SizedBox(height: 20,),
+                    LocationInput()
                   ],
                 ),
               ),

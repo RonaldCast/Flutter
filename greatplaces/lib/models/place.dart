@@ -8,9 +8,8 @@ class PlaceLocation{
   final double longitude;
   final String address;
 
-  PlaceLocation({@required this.latitud, @required this.longitude,
-  
-  @required this.address
+  PlaceLocation({@required this.latitud, @required this.longitude, 
+   @required this.address
   });
 }
 
