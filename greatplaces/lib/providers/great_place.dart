@@ -2,6 +2,9 @@ import 'package:flutter/foundation.dart';
 import '../models/place.dart';
 import 'dart:io';
 import '../helpers/db_helper.dart';
+import '../models/place.dart';
+import '../helpers/location_helper.dart';
+
 
 class GreatPlaces with ChangeNotifier {
   List<Place> _items = [];
@@ -9,19 +12,32 @@ class GreatPlaces with ChangeNotifier {
     return [..._items];
   }
 
-  void addPlace(String pickertitle, File pickerImage) {
+  Future<void> addPlace(String pickertitle, File pickerImage, PlaceLocation pickedLocation) async {
+
+    final address = await LocationHelper.getPlaceAdress(pickedLocation.latitud, pickedLocation.longitude);
+    final updatedLocation = PlaceLocation
+    (latitud: pickedLocation.latitud, 
+    longitude: pickedLocation.longitude, address: address);
+
     final newPlace = Place(
         id: DateTime.now().toString(),
         image: pickerImage,
         title: pickertitle,
-        location: null);
+        location: updatedLocation);
     _items.add(newPlace);
     notifyListeners();
     DBHelper.insert("user_places", {
       'id': newPlace.id,
       'title': newPlace.title,
-      "image": newPlace.image.path
+      "image": newPlace.image.path,
+      "loc_lat": newPlace.location.latitud,
+      'loc_lng': newPlace.location.longitude,
+      'address': newPlace.location.address
     });
+  }
+
+  Place findById(String id){
+    return _items.firstWhere((place) => place.id == id);
   }
 
   Future<void> fetchAndSetPlaces() async {
@@ -31,7 +47,8 @@ class GreatPlaces with ChangeNotifier {
             id: item["id"],
             title: item["title"],
             image: File(item["image"]),
-            location: null))
+            location: PlaceLocation(latitud: item["loc_lat"], 
+            longitude: item['loc_lng'], address: item['address'])))
         .toList();
     notifyListeners();
   }
