@@ -26,7 +26,7 @@ class _AuthFormState extends State<AuthForm> {
     final isValid = _formKey.currentState.validate();
     FocusScope.of(context).unfocus();
 
-    if (_userImageFile == null) {
+    if (_userImageFile == null && !_isLogin) {
       Scaffold.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(SnackBar(
@@ -64,6 +64,9 @@ class _AuthFormState extends State<AuthForm> {
                 TextFormField(
                   textInputAction: TextInputAction.next,
                   key: ValueKey('email'),
+                  autocorrect: false,
+                  textCapitalization: TextCapitalization.none,
+                  enableSuggestions: false,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(labelText: "Email address"),
                   validator: (value) {
@@ -79,6 +82,9 @@ class _AuthFormState extends State<AuthForm> {
                 if (!_isLogin)
                   TextFormField(
                     key: ValueKey('username'),
+                    autocorrect: true,
+                    textCapitalization: TextCapitalization.words,
+                    enableSuggestions: false,
                     decoration: InputDecoration(labelText: 'Username'),
                     validator: (value) {
                       if (value.isEmpty || value.length < 4) {
