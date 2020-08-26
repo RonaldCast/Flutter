@@ -1,4 +1,4 @@
-package com.example.greatplaces
+package com.rcast.greatplaces
 
 import io.flutter.embedding.android.FlutterActivity
 
