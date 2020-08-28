@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import './widgets/ContanerWithBoxDecoration.dart';
 import './widgets/PopupMenuButtonWidget.dart';
+import './screens/image_screen.dart';
+import './screens/decoration_screen.dart';
 
 
 void main() {
@@ -19,6 +21,9 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(title: 'Flutter'),
+      routes:{ ImageScreen.routeName: (ctx) => ImageScreen(),
+        DecorationScreen.routeName: (ctx) => DecorationScreen()
+      },
     );
   }
 }
@@ -91,11 +96,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 Icons.image,
                 color: Colors.white,
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed(ImageScreen.routeName);
+              },
             ),
             IconButton(
-              icon: Icon(Icons.stop, color: Colors.white),
-              onPressed: () {},
+              icon: Icon(Icons.brush, color: Colors.white),
+              onPressed: () {
+                Navigator.of(context).pushNamed(DecorationScreen.routeName);
+              },
             ),
             IconButton(
               icon: Icon(Icons.play_arrow, color: Colors.white),
@@ -133,6 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ButtonBar(
                   alignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                  
                     FlatButton.icon(onPressed: (){}, icon: Icon(Icons.ac_unit), label:Text( "hola")),
                     IconButton(icon: Icon(Icons.pages,)),
                     FlatButton(child: Text("ss"),),
