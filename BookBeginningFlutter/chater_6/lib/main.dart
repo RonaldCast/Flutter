@@ -3,7 +3,7 @@ import './widgets/ContanerWithBoxDecoration.dart';
 import './widgets/PopupMenuButtonWidget.dart';
 import './screens/image_screen.dart';
 import './screens/decoration_screen.dart';
-
+import './screens/form_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,8 +21,10 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(title: 'Flutter'),
-      routes:{ ImageScreen.routeName: (ctx) => ImageScreen(),
-        DecorationScreen.routeName: (ctx) => DecorationScreen()
+      routes: {
+        ImageScreen.routeName: (ctx) => ImageScreen(),
+        DecorationScreen.routeName: (ctx) => DecorationScreen(),
+        FormScreen.routeName: (ctx) => FormScreen()
       },
     );
   }
@@ -39,28 +41,30 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-   
-        return Scaffold(
-          appBar: AppBar(
-            
-            leading: IconButton(
-              icon: Icon(
-                Icons.menu,
-                size: 35.0,
-              ),
-              onPressed: () {},
-            ),
-            actions: [
-              IconButton(
-                icon: Icon(Icons.search),
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: Icon(Icons.more_vert),
-                onPressed: () {},
-              )
-            ],
-            title: Text(widget.title),
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.menu,
+            size: 35.0,
+          ),
+          onPressed: () {},
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: Icon(Icons.more_vert),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: Icon(Icons.note),
+            onPressed: () {},
+          )
+        ],
+        title: Text(widget.title),
         //TODO flexibleSpace
         flexibleSpace: SafeArea(
           child: Icon(
@@ -69,9 +73,9 @@ class _MyHomePageState extends State<MyHomePage> {
             color: Colors.white70,
           ),
         ),
-      bottom: PopupMenuButtonWidget() ,
+        bottom: PopupMenuButtonWidget(),
 
-      //   //TODO: bottom
+        //   //TODO: bottom
         // bottom: PreferredSize(
         //   child: Container(
         //     color: Colors.white70,
@@ -107,8 +111,10 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             IconButton(
-              icon: Icon(Icons.play_arrow, color: Colors.white),
-              onPressed: () {},
+              icon: Icon(Icons.note, color: Colors.white),
+              onPressed: () {
+                Navigator.of(context).pushNamed(FormScreen.routeName);
+              },
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 15.0),
@@ -117,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       body: SingleChildScrollView(
-              child: Center(
+        child: Center(
           child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: Column(
@@ -134,19 +140,29 @@ class _MyHomePageState extends State<MyHomePage> {
                     Divider(),
                     Text("Column1"),
                   ],
-                )
-                ,
-                SizedBox(height: 20.0,),
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
                 Text("Buttons"),
-                
                 ButtonBar(
                   alignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                  
-                    FlatButton.icon(onPressed: (){}, icon: Icon(Icons.ac_unit), label:Text( "hola")),
-                    IconButton(icon: Icon(Icons.pages,)),
-                    FlatButton(child: Text("ss"),),
-                    RaisedButton( child: Text("Flag"), onPressed: (){},),
+                    FlatButton.icon(
+                        onPressed: () {},
+                        icon: Icon(Icons.ac_unit),
+                        label: Text("hola")),
+                    IconButton(
+                        icon: Icon(
+                      Icons.pages,
+                    )),
+                    FlatButton(
+                      child: Text("ss"),
+                    ),
+                    RaisedButton(
+                      child: Text("Flag"),
+                      onPressed: () {},
+                    ),
                   ],
                 )
               ],
