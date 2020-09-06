@@ -7,7 +7,7 @@ class FlyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.shortestSide / 2;
     return Scaffold(
-      appBar: AppBar( title: Text("Brush")),
+      appBar: AppBar( title: Text("animation")),
       body: SafeArea(
           child: Hero(
         tag: 'format_paint',
