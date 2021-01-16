@@ -17,7 +17,8 @@ const cMENU = Color.fromRGBO(72, 174, 125, 1);
 const sTEXT_BUTTON = 15.0;
 
 //URLS
-const API_URL = "http://localhost:5001";
+const API_URL = "http://10.0.2.2:5001";
+//const API_URL = "http://localhost:5001";
 
 const rVALID_EMAIL = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 

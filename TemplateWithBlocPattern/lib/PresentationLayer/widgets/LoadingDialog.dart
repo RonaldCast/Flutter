@@ -29,24 +29,3 @@ class LoadingDialog extends StatelessWidget {
           ));
   }
 }
-// ignore: non_constant_identifier_names
-// Widget LoadingDialog(String text){
-//   return Dialog(
-//           child: Padding(
-//             padding: const EdgeInsets.symmetric(vertical: 40.0),
-//             child: Column(
-//               mainAxisSize: MainAxisSize.min,
-//               children: [
-//                 CircularProgressIndicator(
-//                   valueColor: AlwaysStoppedAnimation<Color>(cMENU),
-//                   backgroundColor: cINPUT,
-//                 ),
-//                 SizedBox(height: 10.1),
-//                 Text(
-//                   text,
-//                   style: TextStyle(fontSize: sTEXT_BUTTON, color: cDARK_GRAY),
-//                 ),
-//               ],
-//             ),
-//           ));
-// }

@@ -30,16 +30,16 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     _form.currentState.save();
 
-    if(!_loading)
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return LoadingDialog(text: "Loading");
-      },
-    );
+    if (!_loading)
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return LoadingDialog(text: "Loading");
+        },
+      );
 
-     setState(() {
+    setState(() {
       _loading = true;
     });
 
@@ -54,24 +54,20 @@ class _LoginScreenState extends State<LoginScreen> {
       body: BlocListener<LoginListingBloc, LoginListingState>(
         listener: (context, state) {
           if (state is LoginState) {
-            print("print login");
-
-            if(_loading){
-               Navigator.of(context).pop();
-               setState(() {
-                 _loading = false;
-               });
+            if (_loading) {
+              Navigator.of(context).pop();
+              setState(() {
+                _loading = false;
+              });
             }
-           
-
           } else if (state is LoginErrorState) {
-             if(_loading){
-               Navigator.of(context).pop();
-               setState(() {
-                 _loading = false;
-               });
+            if (_loading) {
+              Navigator.of(context).pop();
+              setState(() {
+                _loading = false;
+              });
             }
-            
+
             Flushbar(
               flushbarPosition: FlushbarPosition.TOP,
               title: "Alert",
@@ -83,148 +79,154 @@ class _LoginScreenState extends State<LoginScreen> {
             )..show(context);
           }
         },
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          color: Colors.white,
-          height: double.infinity,
-          width: double.infinity,
-          child: SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Logo(),
-                Form(
-                  key: _form,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 40.0, vertical: 10.0),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(6),
-                              color: cINPUT,
-                            ),
-                            child: TextFormField(
-                              keyboardType: TextInputType.emailAddress,
-                              style:
-                                  TextStyle(color: cDARK_GRAY, fontSize: 18.0),
-                              decoration: customInput(hintText: "Usuario"),
-                              // ignore: missing_return
-                              validator: (value) {
-                                RegExp exp = RegExp(rVALID_EMAIL);
-                                if (!exp.hasMatch(value)) {
-                                  setState(() {
-                                    showMessageEmail = 1;
-                                  });
-                                  return '';
-                                }
-                                setState(() {
-                                  showMessageEmail = 0;
-                                });
-                              },
-                              onSaved: (value) {
-                                _auth["email"] = value;
-                              },
-                            ),
-                          ),
-                          animationErrorMessge(
-                              showMessageEmail, "Invalid Email", 9.0, 1),
-                          Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(6),
-                                color: cINPUT,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                SafeArea(
+                  child: Column(
+                    children: [
+                      Logo(),
+                      Container(
+                        child: Form(
+                          key: _form,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 40.0, vertical: 10.0),
+                            child: SingleChildScrollView(
+                              child: Column(
                                 children: [
-                                  Expanded(
-                                    flex: 5,
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(6),
+                                      color: cINPUT,
+                                    ),
                                     child: TextFormField(
-                                      obscureText: _hidPassword,
+                                      keyboardType: TextInputType.emailAddress,
                                       style: TextStyle(
                                           color: cDARK_GRAY, fontSize: 18.0),
                                       decoration:
-                                          customInput(hintText: "Contraseña"),
+                                          customInput(hintText: "Usuario"),
                                       // ignore: missing_return
                                       validator: (value) {
-                                        if (value.isEmpty) {
+                                        RegExp exp = RegExp(rVALID_EMAIL);
+                                        if (!exp.hasMatch(value)) {
                                           setState(() {
-                                            showMessagePassword = 1;
+                                            showMessageEmail = 1;
                                           });
                                           return '';
                                         }
                                         setState(() {
-                                          showMessagePassword = 0;
+                                          showMessageEmail = 0;
                                         });
                                       },
                                       onSaved: (value) {
-                                        _auth["password"] = value;
+                                        _auth["email"] = value;
                                       },
                                     ),
                                   ),
-                                  Expanded(
-                                    child: GestureDetector(
-                                      child: Icon(
-                                        _iconInputPassword,
-                                        color: cDARK_GRAY,
+                                  animationErrorMessge(showMessageEmail,
+                                      "Invalid Email", 9.0, 1),
+                                  Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(6),
+                                        color: cINPUT,
                                       ),
-                                      onTap: () {
-                                        if (_hidPassword) {
-                                          setState(() {
-                                            _hidPassword = false;
-                                            _iconInputPassword =
-                                                Icons.visibility_off;
-                                          });
-                                        } else {
-                                          setState(() {
-                                            _hidPassword = true;
-                                            _iconInputPassword =
-                                                Icons.visibility;
-                                          });
-                                        }
-                                      },
-                                    ),
-                                  ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            flex: 5,
+                                            child: TextFormField(
+                                              obscureText: _hidPassword,
+                                              style: TextStyle(
+                                                  color: cDARK_GRAY,
+                                                  fontSize: 18.0),
+                                              decoration: customInput(
+                                                  hintText: "Contraseña"),
+                                              // ignore: missing_return
+                                              validator: (value) {
+                                                if (value.isEmpty) {
+                                                  setState(() {
+                                                    showMessagePassword = 1;
+                                                  });
+                                                  return '';
+                                                }
+                                                setState(() {
+                                                  showMessagePassword = 0;
+                                                });
+                                              },
+                                              onSaved: (value) {
+                                                _auth["password"] = value;
+                                              },
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: GestureDetector(
+                                              child: Icon(
+                                                _iconInputPassword,
+                                                color: cDARK_GRAY,
+                                              ),
+                                              onTap: () {
+                                                if (_hidPassword) {
+                                                  setState(() {
+                                                    _hidPassword = false;
+                                                    _iconInputPassword =
+                                                        Icons.visibility_off;
+                                                  });
+                                                } else {
+                                                  setState(() {
+                                                    _hidPassword = true;
+                                                    _iconInputPassword =
+                                                        Icons.visibility;
+                                                  });
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      )),
+                                  animationErrorMessge(showMessagePassword,
+                                      "Enter your password", 0.0, 1),
                                 ],
-                              )),
-                          animationErrorMessge(showMessagePassword,
-                              "Enter your password", 0.0, 1),
-                        ],
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                      FlatButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        color: cBOTTON,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 17.0, vertical: 15.0),
+                        onPressed: () async {
+                          await _submit(context);
+                        },
+                        textColor: Colors.white,
+                        child: Text(
+                          "Iniciar sesión",
+                          style: TextStyle(fontSize: sTEXT_BUTTON),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      GestureDetector(
+                          onTap: () async {},
+                          child: Text(
+                            "¿Olvido su contraseña?",
+                            style: TextStyle(
+                                fontSize: 14.0,
+                                color: cTEXT_GREEN,
+                                decoration: TextDecoration.underline),
+                          ))
+                    ],
                   ),
                 ),
-                FlatButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  color: cBOTTON,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 17.0, vertical: 15.0),
-                  onPressed: () async {
-                    await _submit(context);
-                  },
-                  textColor: Colors.white,
-                  child: Text(
-                    "Iniciar sesión",
-                    style: TextStyle(fontSize: sTEXT_BUTTON),
-                  ),
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                GestureDetector(
-                    onTap: () async {},
-                    child: Text(
-                      "¿Olvido su contraseña?",
-                      style: TextStyle(
-                          fontSize: 14.0,
-                          color: cTEXT_GREEN,
-                          decoration: TextDecoration.underline),
-                    ))
               ],
             ),
           ),

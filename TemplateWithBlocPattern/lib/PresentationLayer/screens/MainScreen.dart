@@ -11,16 +11,21 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: RaisedButton(
-        child: Text("Hello"),
-        onPressed: () async {
-          SharedPreferences pref = await SharedPreferences.getInstance();
-          pref.clear();
-          BlocProvider.of<LoginListingBloc>(context).add(
-              LogoutEvent(model: RevokeTokenModel(refreshToken: "sssssss")));
-        },
-      ),
+    return Scaffold(
+      body: Container(
+          child: Row(
+        children: [
+          RaisedButton(
+            child: Text("Hello"),
+            onPressed: () async {
+              SharedPreferences pref = await SharedPreferences.getInstance();
+              pref.clear();
+              BlocProvider.of<LoginListingBloc>(context).add(LogoutEvent(
+                  model: RevokeTokenModel(refreshToken: "sssssss")));
+            },
+          ),
+        ],
+      )),
     );
   }
 }
