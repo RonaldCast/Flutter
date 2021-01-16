@@ -11,18 +11,19 @@ const cGRAY = Color.fromRGBO(218, 220, 221, 1);
 const cLIGTH_GRAY = Color.fromRGBO(183, 191, 195, 1);
 const cDARK_GRAY = Color.fromRGBO(116, 113, 113, 1);
 const cBACKGROUND = Color.fromRGBO(242, 244, 247, 1);
-
-
+const cMENU = Color.fromRGBO(72, 174, 125, 1);
 
 //SIZE
 const sTEXT_BUTTON = 15.0;
 
 //URLS
-const API_URL = "";
+const API_URL = "http://localhost:5001";
+
+const rVALID_EMAIL = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 
 InputDecoration customInput({String hintText}) {
   return InputDecoration(
-      hintText: hintText != null ? hintText : "Text input" ,
+      hintText: hintText != null ? hintText : "Text input",
       floatingLabelBehavior: FloatingLabelBehavior.never,
       labelStyle: TextStyle(color: cDARK_GRAY, fontSize: 17.0),
       border: OutlineInputBorder(),
@@ -30,7 +31,10 @@ InputDecoration customInput({String hintText}) {
       focusedBorder: InputBorder.none,
       errorBorder: InputBorder.none,
       disabledBorder: InputBorder.none,
+      focusedErrorBorder: InputBorder.none,
+      errorStyle: TextStyle(height: 0),
       contentPadding:
-          const EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15)
-);
+          const EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15));
 }
+
+
