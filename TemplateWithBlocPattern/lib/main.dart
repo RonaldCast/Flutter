@@ -36,8 +36,6 @@ class MyApp extends StatelessWidget {
           },
         ),
       ),
-      routes: { 
-      "/mainSc": (ctx) => MainScreen()},
     );
   }
 }
